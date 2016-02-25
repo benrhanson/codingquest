@@ -10,8 +10,8 @@
             <legend ng-mouseover = 'attackMessage("attack")' ng-mouseout = "attackMessage()"> Select Action</legend>
             <legend>Attack</legend>
                <select ng-model = 'choice.weapon'>
-                  <option value = 'sword'>Sword of 1337 Haxing (20-40 Damage)</option>
-                  <option value = 'bow'>Bow of Body Parsing (40 Damage)</option>
+                  <option value = 'sword'>Sword of 1337 Haxing (20-120 Damage)</option>
+                  <option value = 'bow'>Bow of Body Parsing (70 Damage)</option>
                   <option value = 'spear'>Spear of Error Check (50-100 Damage)</option>
                </select>
               <legend>Target</legend>
@@ -23,8 +23,7 @@
          <br>
             <button ng-click = 'potionDrink()'>Potion of Cool Story, Bro (Heals 75 HP)</button>
             <br>
-            <br>
-            <button ng-click = 'reset()'>Start Over</button>
+            <button id='important_button' ng-click = 'reset()'>Start Over</button>
          <br>
 
       </fieldset>

@@ -5,9 +5,10 @@
    <link rel="stylesheet" type="text/css" href="static/css/titlestyle.css"> 
    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
     <script type="text/javascript">
    var message = [];
-   var game_app = angular.module('game_app', ['ngRoute']);
+   var game_app = angular.module('game_app', ['ngRoute', 'ngAnimate']);
 
    //  use the config method to set up routing:
     game_app.config(function ($routeProvider) {
@@ -98,7 +99,7 @@
       }
 
       factory.sword = function(callback){
-         var damage = Math.floor(Math.random()*40);
+         var damage = Math.floor(Math.random()*120);
          if(damage <= 19){
             damage += 20;
          }
@@ -106,7 +107,7 @@
       }
 
       factory.bow = function(callback){
-         var damage = 40;
+         var damage = 70;
          callback(damage);
       }
 
@@ -177,6 +178,48 @@
       }
 
       return factory;
+   })
+
+   // Credits Factory
+   game_app.factory('creditFactory', function(){
+      var factory = {};
+
+      var creditCounter = -1;
+      console.log(creditCounter);
+
+      var credits = ["DojoQuest: A pretty decent game", "Created by Ben Haaaaanson and Owen 'Wait what?' Lowry", "Princess Erza: Inspired by Ezra 'That\'s our Ezra!' Stansfield", "Motivational Support: Josh 'I\'ll punch you in the neck if you put me in the credits'"]
+
+      factory.rollCredits = function(callback){
+         creditCounter++;
+         dunno = credits.length;
+         var data = [{snippet: credits[creditCounter], dunno: dunno, creditCounter: creditCounter}]
+
+         if(creditCounter == dunno-1){
+               creditCounter = -1;
+            }
+         callback(data);
+      }
+      return factory;
+   })
+
+   // Credits Controller
+   game_app.controller('creditController', function($scope, $interval,creditFactory){
+
+      $scope.creditCounter = 0;
+
+      $scope.credits = ["Created by Ben Haaaaanson and Owen 'Wait what?' Lowry", "Princess Erza: Inspired by Ezra 'That\'s our Ezra!' Stanfield", "Motivational Support: Josh 'I\'ll punch you in the neck if you put me in the credits' Barker","Artwork by: Owen Lowry and Ben Hanson", "Music by:", "ChronoTrigger: Main Theme", "Final Fantasy: Main Theme (Harp Cover)", "Megaman ZX Advent: Slam Down (Boss theme)", "Super Mario World: End Theme", "Guilty Gear: Big Blast Sonic", "Catering Provided By: The Selector (a handy dandy app made by Ben Hanson and Owen Lowry)", "Thanks for playing!", "<a href='#/'>Play again?</a>"];
+      
+      $scope.nextCredit = function(){
+            $scope.creditCounter++;
+            document.getElementById('title_credit').innerHTML = '<h2>'+$scope.credits[$scope.creditCounter]+'</h2>';
+
+         }
+
+      $interval($scope.nextCredit, 3900, ($scope.credits.length-1));
+      console.log($scope.credits);
+
+
+
    })
 
    // Princess Controller

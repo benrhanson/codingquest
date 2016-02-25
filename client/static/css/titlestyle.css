@@ -94,3 +94,14 @@ button{
 	display: inline-block;
 	vertical-align: top;
 }
+#title_credit{
+	text-align: center;
+	width: 800px;
+	margin-top: 20%;
+	margin-left: auto;
+	margin-right: auto;
+	color: white;
+}
+#important_button{
+	margin-top: .8%;
+}
