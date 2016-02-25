@@ -1,0 +1,52 @@
+<body>
+<div ng-controller = 'hiroController'>            
+
+   <div class='fight_page'>
+      <fieldset id='first'>
+         <h2>Hiro</h2>
+         <div><h2>{{hiro}} HP</h2></div>
+         <img id = 'hiro' src='static/images/hiro.png' ng-mouseover = 'attackMessage("hiro")' ng-mouseout = "attackMessage()">
+         <form>
+            <legend ng-mouseover = 'attackMessage("attack")' ng-mouseout = "attackMessage()"> Select Action</legend>
+            <legend>Attack</legend>
+               <select ng-model = 'choice.weapon'>
+                  <option value = 'sword'>Sword of 1337 Haxing (20-40 Damage)</option>
+                  <option value = 'bow'>Bow of Body Parsing (40 Damage)</option>
+                  <option value = 'spear'>Spear of Error Check (50-100 Damage)</option>
+               </select>
+              <legend>Target</legend>
+               <select ng-model = 'choice.target'>
+                  <option value = 'spider'>Spider Lord Glitchos</option>
+               </select>
+               <input type = 'submit' value = 'Attack!' ng-click='attack(choice)'>
+         </form>
+         <br>
+            <button ng-click = 'potionDrink()'>Potion of Cool Story, Bro (Heals 75 HP)</button>
+            <br>
+            <br>
+            <button ng-click = 'reset()'>Start Over</button>
+         <br>
+
+      </fieldset>
+
+      <fieldset id='second'>
+         <h2>Enemy</h2>
+         <div><h2>{{enemy.glitchos}} HP</h2></div>
+         <div id='spider' name = 'spider' ng-mouseover = 'attackMessage("spider")' ng-mouseout = "attackMessage()">
+            <img id='spider1' src='static/images/spider_queen.png'>
+            <br>
+            <br>
+            <br>
+            
+            <br>
+         </div> 
+      </fieldset>
+      {{popup}}
+      <br>
+      {{message}}
+      <audio autoplay loop>
+         <source src="static/music/minion.mp3">   
+      </audio>
+   </div>
+</div>
+</body>

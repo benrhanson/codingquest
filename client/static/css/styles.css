@@ -1,0 +1,62 @@
+*{
+	border: 0%;
+	padding: 0%;
+	background-color: black;
+}
+
+#container{
+	background-color: black;
+	color: white;
+	height: 100%;
+	padding-top: 5%;
+	vertical-align: top;
+}
+
+
+#image{
+	width: 40%;
+	height: 70%;
+}
+
+#princess_box{
+	background-color: green;
+}
+
+#link{
+	background-color: green;
+	font-size: 50px;
+}
+
+#conversation{
+	background-color: green;
+	height: 40%;
+	width: 80%;
+	margin-bottom: 5%;
+	text-align: center;
+	padding: 10%, 2%, 2%, 2%;
+}
+
+#right{
+	width: 50%;
+	height: 80%;
+}
+
+#image, #right{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.button{
+	color: white;
+	background-color: blue;
+	font-size: 30px;
+	border: 1px black solid;
+}
+
+#first{
+	padding: 1%;
+}
+
+#second{
+	padding: 1%;
+}

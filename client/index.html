@@ -1,0 +1,363 @@
+<html ng-app='game_app'>
+<head>
+   <title>Hiro</title>
+   <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+   <link rel="stylesheet" type="text/css" href="static/css/titlestyle.css"> 
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+    <script type="text/javascript">
+   var message = [];
+   var game_app = angular.module('game_app', ['ngRoute']);
+
+   //  use the config method to set up routing:
+    game_app.config(function ($routeProvider) {
+      $routeProvider
+        .when('/',{
+            templateUrl: 'intro.html'
+        })
+        .when('/princess',{
+            templateUrl: 'princess.html'
+        })
+        .when('/fight',{
+            templateUrl: 'fight.html'
+        })
+        .when('/victory', {
+            templateUrl: 'victory.html'
+        })
+        .when('/credits', {
+            templateUrl: 'credits.html'
+        })
+    });
+
+    // Princess Factory
+    game_app.factory('princessFactory', function(){
+
+         var factory = {};
+
+         var counter = -1;
+         thank_counter = -1;
+
+         var conversation = ["Your name is Sir Hiro? Wonderful! I am so relieved to see you!", "I am Princess Erza, heir to the throne of the Kingdom of Appopolis.", "Long have I been the captive of the evil Spider Lord Glitchos, the King of Bugs, the bringer of Stack Overflow, the weilder of the sword 404, the...", "(several hours later)", "... destroyer of Netscape, whose Xbox Live Gamescore is 1,000,000.", "I can tell you are a master of the mental arts. Your ability to meditate while listening to me is admirable.", "Though perhaps you may want to see a doctor about the snoring.", "Regardless, will you save me from his horrid clutches?", "Fantastic! Unfortunately, I cannot help you directly.", "I am constrained by a powerful Boolean curse that prevents me from leaving while(curse !== false).", "I will be able to talk to you through my iWand 6S. I have valuable insight on Lord Glitchos that can help you out.", "Now go, Sir Hiro, and save the land!", "<a id = 'link' href='#/fight'>Play the Game!</a>" ];
+
+         var congratulation = ['You have saved me and my kingdom from the horror of Lord Glitchos!', 'As a reward for your bravery, I give you the greatest honor my kingdom can bestow...', 'This is a coupon for half off of a pizza at Dominos, provided that you buy a pizza of equal or less value at menu price.', 'It expired on Monday, but I am sure they will accept it if you tell them I sent you.', 'What do you mean, "is that it?"', 'You thought I was going to... marry you?', 'What kind of stories have you been reading? You are being absurd!', "... (ahem)", "Anyway, that awkardness aside...", 'Sir Hiro, I thank you again for your service.', 'I wish you well in your future adventures.', "<a id = 'link' href='#/credits'>View the credits</a>" ];
+
+         factory.talk = function(callback){
+            counter ++;
+            varby = conversation.length;
+            var data = [
+            {snippet: conversation[counter], varby: varby, counter: counter}
+            ];
+
+            if(counter == varby-1){
+            counter = -1;
+            }
+
+            callback(data);
+         }
+
+         factory.thank = function(callback){
+            thank_counter ++;
+            thank_length = congratulation.length;
+            var data = [
+            {snippet: congratulation[thank_counter], thank_length: thank_length, thank_counter: thank_counter}
+            ];
+
+            if(thank_counter == thank_length-1){
+               thank_counter = -1;
+            }
+            callback(data);
+         }
+
+         return factory;
+      })
+   // Hiro factory
+   game_app.factory('hiroFactory', function(){
+      var hp = 200;
+      var hiro_ko = false;
+      var message = [];
+
+      var factory = {};
+
+      factory.reset = function(){
+         hp = 200;
+         hiro_ko = false;
+      }
+
+      factory.getHiro = function(callback){
+         callback(hp, hiro_ko);
+      }
+
+      factory.hurtHiro = function(data, callback){
+         var damage = data;
+         hp -= damage;
+         if(hp <= 0){
+            hiro_ko = true;
+            hp = 0;
+         }
+         callback(hp);
+      }
+
+      factory.sword = function(callback){
+         var damage = Math.floor(Math.random()*40);
+         if(damage <= 19){
+            damage += 20;
+         }
+         callback(damage);
+      }
+
+      factory.bow = function(callback){
+         var damage = 40;
+         callback(damage);
+      }
+
+      factory.spear = function(callback){
+         var damage = Math.floor(Math.random()*100);
+         if(damage <= 49){
+            damage += 50;
+         }
+         callback(damage);
+      }
+
+      factory.heal = function(callback){
+         hp += 75;
+         if(hp >= 200){
+            hp = 200;
+         }
+         callback(hp);
+      }
+
+      return factory;
+   })
+
+   // Enemy Factory
+   game_app.factory('enemyFactory', function(){
+      var glitchos_ko = false;
+      var minion_ko = false;
+
+      var glitchos_hp = 500;
+      var minion_hp = 100;
+
+      var factory = {};
+
+      factory.reset = function(){
+         glitchos_ko = false;
+         minion_ko = false;
+         glitchos_hp = 500;
+         minion_hp = 100;
+      }
+
+      factory.getEnemy = function(callback){
+         callback(glitchos_hp, minion_hp, glitchos_ko);
+      }
+
+      factory.damageEnemy = function(data, callback){
+         if(data.target = 'spider'){
+            var health = glitchos_hp;
+            glitchos_hp -= data.damage;
+            if(glitchos_hp <= 0){
+               glitchos_hp = 0;
+               glitchos_ko = true;
+            }
+            callback(glitchos_hp, health);   
+         }
+      }
+
+      factory.counter = function(callback){
+         var damage = 0;
+         if(glitchos_ko == false){
+            var chooseAttack = Math.floor(Math.random()*10)
+            if(chooseAttack > 7){
+               damage += 100;
+               }
+            else{
+               damage += 40;
+               }
+         }
+         callback(damage);
+      }
+
+      return factory;
+   })
+
+   // Princess Controller
+   game_app.controller('princessController', function($scope, $interval, princessFactory, hiroFactory, enemyFactory){
+
+
+         $interval(closeMouth, 400);
+
+         $interval(openMouth, 250);             
+
+         $scope.reset = function(){
+            //resets Hiro's hp
+            hiroFactory.reset();
+            hiroFactory.getHiro(function(data){
+               $scope.hiro = data;
+            })
+            //resets enemy's hp
+            enemyFactory.reset();
+            enemyFactory.getEnemy(function(glitchos, minion){
+               var data = {glitchos: glitchos, minion: minion}
+               $scope.enemy = data;
+         })
+      }
+
+
+
+         function openMouth(){
+            document.getElementById('image').innerHTML = '<img src="static/images/mouthopen.png">'
+         }
+
+         function closeMouth(){
+            document.getElementById('image').innerHTML = '<img src="static/images/mouthclose.png">'           
+         }
+
+         $scope.speak = function(){
+            princessFactory.talk(function (data){
+               if(data[0].varby-1 === data[0].counter){
+                  document.getElementById('button').innerHTML = "";
+               }
+               document.getElementById('conversation').innerHTML = '<h2>'+data[0].snippet+'</h2>';
+            })
+         }
+
+         $scope.thanks = function(){
+            princessFactory.thank(function(data){
+               if(data[0].thank_counter === data[0].thank_length-1){
+                  document.getElementById('button').innerHTML = "";
+               }
+               document.getElementById('conversation').innerHTML = '<h2>'+data[0].snippet+'</h2>';
+            })
+
+         }
+
+      })
+
+   // Hiro Controller
+   game_app.controller('hiroController', function($scope, hiroFactory, enemyFactory){
+
+      $scope.message = '';
+      $scope.popup = 'Hover your mouse over things to find out about them!'
+
+      $scope.reset = function(){
+            //resets Hiro's hp
+            hiroFactory.reset();
+            hiroFactory.getHiro(function(data){
+               $scope.hiro = data;
+            })
+            //resets enemy's hp
+            enemyFactory.reset();
+            enemyFactory.getEnemy(function(glitchos, minion){
+               var data = {glitchos: glitchos, minion: minion}
+               $scope.enemy = data;
+         })
+      }
+
+      hiroFactory.getHiro(function(data){
+         $scope.hiro = data;
+      })
+
+      enemyFactory.getEnemy(function(glitchos, minion, g_ko, m_ko){
+         var data = {glitchos: glitchos, minion: minion}
+         $scope.enemy = data;
+      })
+
+      $scope.potionDrink = function(){
+         hiroFactory.heal(function(data){
+            $scope.hiro = data;
+         })
+         enemyFactory.counter(function(data){
+            hiroFactory.hurtHiro(data, function(data){
+               hiroFactory.getHiro(function(hp, ko){
+                  $scope.hiro = hp;
+                  if(ko == true){
+                     $scope.message = "You lose. Please try again!";
+                     document.getElementById('first').innerHTML = 'You lose! The princess will be locked away by the evil Spider Lord Glitchos forever. Also you died. <br> <a href="#/princess" ng-click = "reset()">Talk to the Princess?</a> <br> <a href="http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Adiapers" ng-click = "reset()">Run Away?</a>';                     
+                  }
+               })
+            })
+         })
+      }
+
+      $scope.attack = function(data){
+         var weapon = data.weapon;
+         var target = data.target;
+            if(weapon == 'sword'){
+               hiroFactory.sword(function(data){
+                  assault = {damage: data, target: target};
+                  enemyFactory.damageEnemy(assault, function(data, data2){
+                      enemyFactory.getEnemy(function(glitchos, minion){
+                        var data = {glitchos: glitchos, minion: minion}
+                        $scope.enemy = data;
+                     })
+                  })
+               })
+            }
+
+            else if(weapon == 'bow'){
+               hiroFactory.bow(function(data){
+                  assault = {damage: data, target: target};
+                  enemyFactory.damageEnemy(assault, function(data, data2){
+                      enemyFactory.getEnemy(function(glitchos, minion){
+                        var data = {glitchos: glitchos, minion: minion}
+                        $scope.enemy = data;
+                     })
+                  })
+               })
+            }
+
+            else if(weapon == 'spear'){
+               hiroFactory.spear(function(data){
+                  assault = {damage: data, target: target};
+                  enemyFactory.damageEnemy(assault, function(data, data2){
+                      enemyFactory.getEnemy(function(glitchos, minion){
+                        var data = {glitchos: glitchos, minion: minion}
+                        $scope.enemy = data;
+                     })
+                  })
+               })
+         }
+         //after resolving attack, enemies counterattack
+         enemyFactory.counter(function(data){
+            if(data == 0){
+                 $scope.message = "Huzzah";
+                  document.getElementById('second').innerHTML = 'You win! You have prooved the justice of our culture! Now go and rest our heroes! <br><br> <a href="#/victory">Go Get Your Reward</a>';               
+            }
+            hiroFactory.hurtHiro(data, function(data){
+               hiroFactory.getHiro(function(hp, ko){
+                  $scope.hiro = hp;
+                  if(ko == true){
+                     $scope.message = "You lose. Please try again!";
+                     document.getElementById('first').innerHTML = 'You lose! The princess will be locked away by the evil Spider Lord Glitchos forever. Also you died. <br><br> <a href="#/princess">Talk to the Princess again?</a> <br> <a href="http://www.amazon.com/s?ie=UTF8&page=1&rh=i%3Aaps%2Ck%3Adiapers">Run Away?</a>';                     
+                  }
+               })
+            })
+         })
+      }
+
+      $scope.attackMessage = function(data){
+         // console.log(data);
+         if(data == 'spider'){
+            $scope.popup = "Princess Erza: This is Spider Lord Glitchos. He can hit you for 40 or 100 damage. If you defeat him, you win.";    
+         }
+         else if(data == 'hiro'){
+            $scope.popup = "Princess Erza: That's you, silly!";
+         }
+         else if(data == 'attack'){
+            $scope.popup = 'Princess Erza: Select an attack from the list. Be careful, though; every time you attack or use an item, you leave yourself open to a counterattack!';
+         }
+         else{
+            $scope.popup = "";              
+         }
+      }
+   })
+
+    </script>
+
+</head>
+
+   
+<body>
+   <div ng-view="">
+   </div>
+</body>
+</html>

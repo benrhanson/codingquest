@@ -1,0 +1,21 @@
+<div id = "container" ng-controller = "princessController">
+	<!-- Megaman -->
+	<div id = "image">
+		<img ng-src="static/images/mouthclose.png">
+	</div>
+	<div id = "right">
+		<div id = "conversation" ng-mouseover = 'reset()'>
+			<h2 id='princess_box'>Who goes there? It's so dark in this dungeon....</h2>
+		</div>	
+		<div id = "button">
+			<button class = 'button'  ng-click = 'speak()'>Next</button>
+		</div>
+	</div>
+<audio autoplay loop>
+	<source src="static/music/ffharp.mp3">
+</audio>
+</div>
+
+
+</body>
+</html>

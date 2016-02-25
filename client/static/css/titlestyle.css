@@ -1,0 +1,96 @@
+*{
+	font-family: 'Press Start 2P';
+}
+body{
+	background-color: black;
+}
+
+
+#title{
+	width: 60%;
+	height: 50%;
+	color: white;
+	font-size: 76;
+	padding-left: 3%;
+}
+
+#start{
+	width: 40%;
+	font-size: 30;
+	padding-left: 3%;
+}
+
+#start, #pic{
+	display: inline-block;
+	vertical-align: top;
+}
+
+a{
+	text-decoration: none;
+	color: white;
+}
+.fight_page{
+	color: white;
+}
+
+.button{
+	color: black;
+}
+#image{
+	width: 40%;
+	height: 70%;
+}
+
+#link{
+	background-color: green;
+	font-size: 50px;
+}
+
+#conversation{
+	background-color: green;
+	color: white;
+	height: 70%;
+	width: 80%;
+	text-align: center;
+	padding: 5%;
+	vertical-align: middle;
+}
+
+#right{
+	width: 40%;
+	height: 70%;
+}
+
+#image, #right{
+	display: inline-block;
+	vertical-align: top;
+}
+
+#first{
+	display: inline-block;
+	color: green;
+	width: 45%;
+	height: 75%;
+}
+#second{
+	color: red;	
+	width: 45%;
+	height: 75%;
+}
+
+option{
+	padding: 3%;
+	font-size: 15px;
+}
+
+button{
+	font-size: 15px;
+}
+#spider1{
+	background-color: white;
+}
+
+#first, #second{
+	display: inline-block;
+	vertical-align: top;
+}
